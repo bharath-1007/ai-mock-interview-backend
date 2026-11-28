@@ -3,6 +3,8 @@ package com.example.ai_mock_interview_backend.controller;
 import com.example.ai_mock_interview_backend.entity.InterviewQuestion;
 import com.example.ai_mock_interview_backend.service.InterviewQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -12,6 +14,18 @@ public class InterviewQuestionController {
 
     @Autowired
     private InterviewQuestionService interviewQuestionService;
+
+
+    @PostMapping("/generate/{sessionId}")
+    public ResponseEntity<InterviewQuestion> generateQuestion(
+            @PathVariable Long sessionId) {
+
+        InterviewQuestion question =
+                interviewQuestionService.generateQuestion(sessionId);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(question);
+    }
 
     // Save interview question
     @PostMapping

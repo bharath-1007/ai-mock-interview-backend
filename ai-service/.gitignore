@@ -1,8 +1,0 @@
-# Python
-ai-service/venv/
-ai-service/.venv/
-__pycache__/
-*.pyc
-
-# Secret configuration
-ai-service/.env
