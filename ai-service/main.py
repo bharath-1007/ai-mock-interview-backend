@@ -3,6 +3,12 @@ from fastapi import FastAPI, HTTPException
 from services.gemini_service import generate_response
 from models.question_model import QuestionRequest, QuestionResponse
 from services.question_service import generate_question
+from models.evaluation_model import (
+    EvaluationRequest,
+    EvaluationResponse
+)
+from services.evaluation_service import evaluate_answer
+import logging
 app = FastAPI(title="AI Mock Interview Service")
 @app.get("/")
 def home():
@@ -60,4 +66,17 @@ def generate_interview_question(request: QuestionRequest):
         raise HTTPException(
             status_code=502,
             detail="Question generation failed"
+        )
+@app.post("/evaluate-answer", response_model=EvaluationResponse)
+def evaluate_answer_api(request: EvaluationRequest):
+
+    try:
+        return evaluate_answer(request)
+
+    except Exception as e:
+        logging.exception("AI answer evaluation failed")
+
+        raise HTTPException(
+            status_code=502,
+            detail=str(e)
         )
